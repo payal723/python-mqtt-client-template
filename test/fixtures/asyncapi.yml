@@ -1,0 +1,54 @@
+
+asyncapi: 3.0.0
+info:
+  title: Temperature Service
+  version: 1.0.0
+  description: This service is in charge of processing all the events related to temperature.
+
+servers:
+  dev:
+    host: test.mosquitto.org
+    protocol: mqtt
+
+channels:
+  temperatureDroppedChannel:
+    address: temperature/dropped
+    messages:
+      temperatureDropMessage:
+        $ref: '#/components/messages/temperatureDropMessage'
+
+  temperatureRisenChannel:
+    address: temperature/risen
+    messages:
+      temperatureRiseMessage:
+        $ref: '#/components/messages/temperatureRiseMessage'
+
+operations:
+  temperatureDrop:
+    action: send
+    channel:
+      $ref: '#/channels/temperatureDroppedChannel'
+    messages:
+      - $ref: '#/channels/temperatureDroppedChannel/messages/temperatureDropMessage'
+  temperatureRise:
+    action: send
+    channel:
+      $ref: '#/channels/temperatureRisenChannel'
+    messages:
+      - $ref: '#/channels/temperatureRisenChannel/messages/temperatureRiseMessage'
+
+components:
+  messages:
+    temperatureDropMessage:
+      payload:
+        $ref: '#/components/schemas/temperatureId'
+    temperatureRiseMessage:
+      payload:
+        $ref: '#/components/schemas/temperatureId'
+  schemas:
+    temperatureId:
+      type: object
+      additionalProperties: false
+      properties:
+        temperatureId:
+          type: string
