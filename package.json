@@ -10,7 +10,7 @@
   },
   "generator": {
     "renderer": "react",
-    "apiVersion": "v1",
+    "apiVersion": "v3*",
     "generator": ">=1.10.0 <2.0.0",
     "supportedProtocols": [
       "mqtt"
@@ -26,6 +26,7 @@
     "@asyncapi/generator-react-sdk": "^0.2.25"
   },
   "devDependencies": {
+    "@asyncapi/cli": "^4.1.1",
     "rimraf": "^5.0.0"
   }
 }

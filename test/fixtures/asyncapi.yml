@@ -1,5 +1,5 @@
-
 asyncapi: 3.0.0
+
 info:
   title: Temperature Service
   version: 1.0.0
@@ -7,44 +7,34 @@ info:
 
 servers:
   dev:
-    host: test.mosquitto.org
+    host: test.mosquitto.org #in case you're using local mosquitto instance, change this value to localhost.
     protocol: mqtt
 
 channels:
-  temperatureDroppedChannel:
-    address: temperature/dropped
+  temperatureChangedChannel:
+    address: temperature/changed
+    description: Updates the bedroom temperature in the database when the temperatures drops or goes up.
     messages:
-      temperatureDropMessage:
-        $ref: '#/components/messages/temperatureDropMessage'
-
-  temperatureRisenChannel:
-    address: temperature/risen
-    messages:
-      temperatureRiseMessage:
-        $ref: '#/components/messages/temperatureRiseMessage'
+      temperatureMessage:
+        description: Message that is being sent when the temperature in the bedroom changes.
+        payload:
+          $ref: '#/components/schemas/temperatureId'
 
 operations:
-  temperatureDrop:
-    action: send
+  temperatureChange:
+    action: receive
     channel:
-      $ref: '#/channels/temperatureDroppedChannel'
+      $ref: '#/channels/temperatureChangedChannel'
     messages:
-      - $ref: '#/channels/temperatureDroppedChannel/messages/temperatureDropMessage'
-  temperatureRise:
-    action: send
-    channel:
-      $ref: '#/channels/temperatureRisenChannel'
-    messages:
-      - $ref: '#/channels/temperatureRisenChannel/messages/temperatureRiseMessage'
+      - $ref: '#/channels/temperatureChangedChannel/messages/temperatureMessage'
 
 components:
   messages:
-    temperatureDropMessage:
+    temperatureMessage:
+      description: Message that is being sent when the temperature in the bedroom changes.
       payload:
         $ref: '#/components/schemas/temperatureId'
-    temperatureRiseMessage:
-      payload:
-        $ref: '#/components/schemas/temperatureId'
+        
   schemas:
     temperatureId:
       type: object
