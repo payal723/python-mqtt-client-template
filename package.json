@@ -10,7 +10,7 @@
   },
   "generator": {
     "renderer": "react",
-    "apiVersion": "v3*",
+    "apiVersion": "v3",
     "generator": ">=1.10.0 <2.0.0",
     "supportedProtocols": [
       "mqtt"
